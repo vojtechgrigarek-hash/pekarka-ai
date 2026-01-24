@@ -1,0 +1,33 @@
+[
+  {
+    "id": "loupacky",
+    "nazev": "Loupáčky",
+    "popis": "Nadýchané domácí loupáčky jako od babičky.",
+    "ingredience": ["hladká mouka", "mléko", "máslo", "cukr", "droždí", "vejce", "mák na posyp"],
+    "alergeny": ["lepek", "laktoza", "vejce"],
+    "nahrady": {
+      "laktoza": "Mléko nahraďte ovesným nápojem a máslo rostlinným tukem Alsan.",
+      "vejce": "Pro potření použijte slazenou rostlinnou smetanu nebo jen vodu s cukrem."
+    }
+  },
+  {
+    "id": "housticky",
+    "nazev": "Houstičky",
+    "popis": "Pletené houstičky se sypaným mákem nebo solí.",
+    "ingredience": ["pšeničná mouka", "voda", "droždí", "sůl", "trocha sádla nebo oleje"],
+    "alergeny": ["lepek"],
+    "nahrady": {
+      "lepek": "Lze zkusit bezlepkovou směs na kynuté pečení, ale pletení copánků bude vyžadovat více trpělivosti (těsto se více trhá)."
+    }
+  },
+  {
+    "id": "koblihy",
+    "nazev": "Koblihy",
+    "popis": "Smažené koblihy s povidly nebo marmeládou.",
+    "ingredience": ["mouka", "žloutky", "rum", "droždí", "mléko", "máslo", "olej na smažení"],
+    "alergeny": ["lepek", "laktoza", "vejce"],
+    "nahrady": {
+      "vejce": "Žloutky jsou v koblížkách pro barvu a vláčnost, lze je nahradit trochou vanilkového pudinku rozmíchaného v mléce."
+    }
+  }
+]
