@@ -6,49 +6,69 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Načtení receptů
+// 1. Načtení databáze receptů ze souboru
 const recepty = JSON.parse(fs.readFileSync('recepty.json', 'utf8'));
 
-// TADY JE TA ZMĚNA: Proměnná pro zapamatování kontextu
+// 2. Proměnná pro "paměť" serveru (kontext)
 let aktualniRecept = null;
 
 app.post('/chat', (req, res) => {
     const { dotaz } = req.body;
-    const text = dotaz.toLowerCase(); // Převedeme na malá písmena
+    if (!dotaz) {
+        return res.json({ odpoved: "Zatím jsi nic nenapsal." });
+    }
 
-    // 1. Zkusíme najít nový recept podle názvu
+    const text = dotaz.toLowerCase();
+
+    // 3. LOGIKA: Hledání receptu v textu
     const nalezenyRecept = recepty.find(r => 
         text.includes(r.id) || text.includes(r.nazev.toLowerCase())
     );
 
-    // Pokud uživatel zmínil název receptu (např. "loupáčky")
+    // A) Pokud uživatel zmínil název receptu (přepneme kontext)
     if (nalezenyRecept) {
-        aktualniRecept = nalezenyRecept; // ULOŽÍME SI HO DO PAMĚTI!
-        res.json({ odpoved: `Našel jsem recept na ${nalezenyRecept.nazev}. Co tě zajímá? (alergeny / náhrady)` });
-    }
-    
-    // 2. Pokud uživatel nenapsal název receptu, ale ptá se na detaily (a my máme recept v paměti)
-    else if (aktualniRecept && (text.includes("alerg") || text.includes("náhrad") || text.includes("ingredience"))) {
+        aktualniRecept = nalezenyRecept;
         
+        // Pokud rovnou v jedné větě napsal i "alergeny" nebo "náhrady"
         if (text.includes("alerg")) {
-            res.json({ odpoved: `Alergeny v receptu ${aktualniRecept.nazev}: ${aktualniRecept.alergeny.join(", ")}.` });
-        } 
-        else if (text.includes("náhrad")) {
-            // Převedeme objekt náhrad na čitelný text
-            const nahradyText = JSON.stringify(aktualniRecept.nahrady).replace(/{|}|"/g, ' '); 
-            res.json({ odpoved: `Náhrady pro ${aktualniRecept.nazev}: ${nahradyText}` });
+            return res.json({ odpoved: `V receptu na ${aktualniRecept.nazev} jsou tyto alergeny: ${aktualniRecept.alergeny.join(", ")}.` });
         }
-        else if (text.includes("ingredience")) {
-            res.json({ odpoved: `Potřebuješ: ${aktualniRecept.ingredience.join(", ")}.` });
+        if (text.includes("náhrad") || text.includes("alternativ")) {
+            return res.json({ odpoved: formatujNahrady(aktualniRecept) });
+        }
+
+        return res.json({ odpoved: `Jasně, dívám se na ${nalezenyRecept.nazev}. Co konkrétně tě zajímá? (alergeny / náhrady / ingredience)` });
+    }
+
+    // B) Pokud uživatel nenapsal název, ale máme recept v "paměti"
+    if (aktualniRecept) {
+        if (text.includes("alerg")) {
+            return res.json({ odpoved: `Alergeny pro ${aktualniRecept.nazev} jsou: ${aktualniRecept.alergeny.join(", ")}.` });
+        } 
+        
+        if (text.includes("náhrad") || text.includes("alternativ")) {
+            return res.json({ odpoved: formatujNahrady(aktualniRecept) });
+        }
+
+        if (text.includes("ingredience") || text.includes("co potřebuju") || text.includes("složení")) {
+            return res.json({ odpoved: `Na ${aktualniRecept.nazev} budeš potřebovat: ${aktualniRecept.ingredience.join(", ")}.` });
         }
     }
 
-    // 3. Pokud nevíme, o čem je řeč
-    else {
-        res.json({ odpoved: "Nevím, o jakém receptu mluvíš. Zkus napsat třeba 'Loupáčky' nebo 'Koblihy'." });
-    }
+    // C) Pokud bot neví, o čem je řeč
+    res.json({ odpoved: "Zatím nevím, o jakém receptu se bavíme. Zkus napsat třeba 'houstičky' nebo 'loupáčky'." });
 });
 
-app.listen(3000, () => {
-    console.log('Server běží na http://localhost:3000');
+// Pomocná funkce pro hezké vypsání náhrad
+function formatujNahrady(recept) {
+    const nahrady = recept.nahrady;
+    let vypis = `Náhrady pro ${recept.nazev}: `;
+    const polozky = Object.entries(nahrady).map(([co, cim]) => `${co} -> ${cim}`);
+    return vypis + polozky.join(", ");
+}
+
+// Spuštění serveru
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server běží na portu ${PORT}`);
 });
