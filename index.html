@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pekařka Online - Asistent</title>
+    <style>
+        /* DESIGN CHATU */
+        body { font-family: 'Segoe UI', sans-serif; background-color: #fdf6e3; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; }
+        
+        #chat-bubble {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 65px; height: 65px; border-radius: 50%;
+            background: #f0a500; color: white; border: none;
+            font-size: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center; z-index: 1000;
+        }
+
+        #chat-window {
+            position: fixed; bottom: 100px; right: 20px;
+            width: 350px; height: 500px; background: white;
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; overflow: hidden; z-index: 1000; border: 1px solid #ddd;
+        }
+
+        #chat-header { background: #f0a500; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        #messages { flex: 1; padding: 15px; overflow-y: auto; background: #fffcf5; display: flex; flex-direction: column; gap: 10px; }
+
+        .msg { padding: 10px 14px; border-radius: 15px; max-width: 80%; font-size: 14px; }
+        .user-msg { background: #f0a500; color: white; align-self: flex-end; }
+        .bot-msg { background: #e0e0e0; color: #333; align-self: flex-start; }
+
+        #input-area { display: flex; padding: 10px; border-top: 1px solid #eee; }
+        #user-input { flex: 1; border: 1px solid #ccc; border-radius: 20px; padding: 10px; outline: none; }
+        #send-btn { background: #f0a500; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; margin-left: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <button id="chat-bubble" onclick="toggleChat()">💬</button>
+
+    <div id="chat-window">
+        <div id="chat-header">
+            <span>Pekařka Asistent 🥖</span>
+            <span style="cursor:pointer" onclick="toggleChat()">✕</span>
+        </div>
+        <div id="messages">
+            <div class="msg bot-msg">Ahoj! Jsem online. Zeptej se na recepty (loupáčky, koblihy...).</div>
+        </div>
+        <div id="input-area">
+            <input type="text" id="user-input" placeholder="Napiš zprávu..." onkeypress="handleEnter(event)">
+            <button id="send-btn" onclick="poslatZpravu()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const okno = document.getElementById('chat-window');
+            okno.style.display = (okno.style.display === "none" || okno.style.display === "") ? "flex" : "none";
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') poslatZpravu();
+        }
+
+        async function poslatZpravu() {
+            const input = document.getElementById('user-input');
+            const messagesDiv = document.getElementById('messages');
+            const text = input.value.trim();
+
+            if (text === "") return;
+
+            // Zobrazení tvé zprávy
+            messagesDiv.innerHTML += `<div class="msg user-msg">${text}</div>`;
+            input.value = "";
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            try {
+                // TADY JE TA ZMĚNA: Tvoje adresa z Renderu
+                const response = await fetch('https://pekarka-ai-1.onrender.com/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ dotaz: text })
+                });
+
+                const data = await response.json();
+                messagesDiv.innerHTML += `<div class="msg bot-msg">${data.odpoved}</div>`;
+            } catch (chyba) {
+                messagesDiv.innerHTML += `<div class="msg bot-msg" style="color: red;">Chyba: Server se probouzí nebo je offline. Zkus to za chvilku znovu.</div>`;
+            }
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>
