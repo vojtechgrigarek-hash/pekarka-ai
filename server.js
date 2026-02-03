@@ -29,14 +29,16 @@ app.post('/chat', (req, res) => {
     const text = dotaz.toLowerCase();
 
     // --- KROK 1: GLOBÁLNÍ PŘÍKAZY (VÝPIS VŠECH) ---
-    // Toto kontrolujeme jako první. Pokud chce uživatel seznam, nehledáme konkrétní recept.
     if (text === "recepty" || text.includes("jaké jsou recepty") || text.includes("seznam receptů")) {
-        // Vynulujeme paměť, protože se uživatel vrací na "hlavní menu"
         aktualniRecept = null; 
         
-        const seznamNazvu = recepty.map(r => r.nazev).join(", ");
+        // ZMĚNA: Místo čárky použijeme "\n- " (nový řádek a pomlčka)
+        // .map() projde recepty a .join() je spojí tímto oddělovačem
+        const seznamNazvu = recepty.map(r => r.nazev).join("\n- ");
+        
         return res.json({ 
-            odpoved: `Mám v databázi tyto recepty: ${seznamNazvu}. O kterém se chceš dozvědět víc?` 
+            // Přidal jsem \n i před první recept, aby to začalo na novém řádku
+            odpoved: `Mám v databázi tyto recepty:\n- ${seznamNazvu}\n\nO kterém se chceš dozvědět víc?` 
         });
     }
 
