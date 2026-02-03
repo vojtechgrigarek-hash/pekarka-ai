@@ -1,33 +1,178 @@
 [
   {
-    "id": "loupacky",
-    "nazev": "Loupáčky",
-    "popis": "Nadýchané domácí loupáčky jako od babičky.",
-    "ingredience": ["hladká mouka", "mléko", "máslo", "cukr", "droždí", "vejce", "mák na posyp"],
-    "alergeny": ["lepek", "laktoza", "vejce"],
+    "id": "sacher",
+    "nazev": "Sachertorte",
+    "popis": "Čokoládová legenda z Vídně… Dort, který vznikl z náhody, přežil staletí a stal se symbolem rakouské cukrařiny.",
+    "ingredience": [
+        "máslo a hrubá mouka na vysypání formy",
+        "120 g másla",
+        "120 g hořká čokoláda",
+        "6 vajec",
+        "špetka soli",
+        "100 g cukr krupice",
+        "80 g mletý cukr",
+        "80 g hladká mouka",
+        "40 g kukuřičný škrob",
+        "5 lžic meruňkové marmelády",
+        "5 lžic rumu",
+        "100 ml vody",
+        "60 g cukr krystal",
+        "90 g hořká čokoláda"
+    ],
+    "alergeny": ["lepek", "vejce", "laktóza"],
     "nahrady": {
-      "laktoza": "Mléko nahraďte ovesným nápojem a máslo rostlinným tukem Alsan.",
-      "vejce": "Pro potření použijte slazenou rostlinnou smetanu nebo jen vodu s cukrem."
+        "lepek": "Hladkou mouku lze nahradit bezlepkovou moukou.",
+        "vejce": "Nelze moc nahradit jelikož drží tvar.",
+        "laktóza":"Na formě numusí být použita, jen se těsto následně musí vyřezat. Do těsta lze užít rostlinné/bez laktózové máslo.",
+        "rum": "Lze jej vynechat, jde jen o doplnění chutě."
     }
   },
   {
-    "id": "housticky",
-    "nazev": "Houstičky",
-    "popis": "Pletené houstičky se sypaným mákem nebo solí.",
-    "ingredience": ["pšeničná mouka", "voda", "droždí", "sůl", "trocha sádla nebo oleje"],
-    "alergeny": ["lepek"],
+    "id": "Weihnachtsstollen",
+    "nazev": "stola",
+    "popis": "Tradiční vánoční pečivo, které v sobě nese staletí historie a vůni Vánoc.",
+    "ingredience": [
+        "160 g rozinek",
+        "70 ml rum",
+        "50 g kandovaná cit. kůra",
+        "2 lžičky pom. kůry",
+        "100 ml mléka",
+        "3 lžičky cukr krystal",
+        "1/2 droždí",
+        "400 g mletá mouka",
+        "80 g mletý cukr",
+        "100 g mleté mandle",
+        "100 g máslo",
+        "2 balíčky van. cukru",
+        "1 lžíce soli",
+        "1 lžíce skořice",
+        "1 lžíce kardamomu",
+        "60 g másla na potření",
+        "40 g mletý cukr na posypání"
+    ],
+    "alergeny": ["lepek", "mléko", "skořápkové plody", "siřičitany"],
     "nahrady": {
-      "lepek": "Lze zkusit bezlepkovou směs na kynuté pečení, ale pletení copánků bude vyžadovat více trpělivosti (těsto se více trhá)."
+        "lepek": "Pšeničnou mouku lze nahradit bezlepkovou směsí, ale těsto bude křehčí.",
+        "laktoza": "Lze použít bezlaktózové mléko a rostlinný tuk místo másla.",
+        "orechy": "Místo mandlí lze použít drcená slunečnicová semínka nebo je zcela vynechat."
     }
   },
   {
-    "id": "koblihy",
-    "nazev": "Koblihy",
-    "popis": "Smažené koblihy s povidly nebo marmeládou.",
-    "ingredience": ["mouka", "žloutky", "rum", "droždí", "mléko", "máslo", "olej na smažení"],
-    "alergeny": ["lepek", "laktoza", "vejce"],
+   "id": "churros",
+    "nazev": "Churros",
+    "popis": "Křupavé zvenku, jemné uvnitř – sladká radost, která voní po Španělsku.",
+    "ingredience": [
+        "1 hrnek vody",
+        "3 pol. lžíce másla",
+        "špetka soli",
+        "2 pol. cukr krupice",
+        "1 hrnek mleté mouky",
+        "1 vejce",
+        "1 čaj. lžička vanil. extraktu",
+        "slunečnicový olej dle potřeby",
+        "1 pol. lžíce cukr krupice (posyp)",
+        "1 pol. mletá skořice",
+        "1 pol. vanilkového cukru"
+    ],
+    "alergeny": ["lepek", "vejce", "mléko"],
     "nahrady": {
-      "vejce": "Žloutky jsou v koblížkách pro barvu a vláčnost, lze je nahradit trochou vanilkového pudinku rozmíchaného v mléce."
+        "lepek": "Lze použít bezlepkovou mouku, ale doporučujeme přidat trochu xanthanové gumy pro lepší texturu.",
+        "laktoza": "Máslo lze nahradit kokosovým olejem nebo rostlinným margarínem."
     }
-  }
+  },
+  {
+    
+    "id": "tiramisu",
+    "nazev": "Tiramisù",
+    "popis": "Tradiční italský nepečený dezert s chutí silné kávy a jemným krémem z mascarpone.",
+    "ingredience": [
+        "espresso popřípadě jiné oblíbené (silné) 200 ml",
+        "žloutek 2 ks",
+        "cukr krupice 50 g",
+        "mascarpone 500 g",
+        "smetana ke šlehání 100 ml",
+        "cukrářské piškoty 45 ks",
+        "kakaový prášek 2 lžíce"
+    ],
+    "alergeny": ["vejce", "mléko", "lepek"],
+    "nahrady": {
+        "lepek": "Místo klasických cukrářských piškotů lze použít jejich bezlepkovou variantu.",
+        "laktóza": "Jde využít bezlaktózovou variantu. Nebo u mascarpone jde využít bílý jogurt",
+        "vejce": "Žloutky nejdou pro jejich chuť nahradit",
+        "cukr": "Pro zdravější varientu jde nahradit."
+    }
+  },
+  {
+    "id": "Pasta del Nata",
+    "nazev": "Pasta del Nata",
+    "popis": "Křehké listové těsto, sametový vanilkový krém a chuť Portugalska v jednom soustu.",
+    "ingredience": [
+        "250 g listového těsta",
+        "250 ml mléka",
+        "150 g cukru krupice",
+        "75 ml vody",
+        "30 g hladké mouky",
+        "4 žloutky",
+        "1 tyčinka skořice",
+        "citronová kůra",
+        "špetka soli",
+        "mletá skořice na posypání"
+    ],
+    "alergeny": ["lepek", "vejce", "mléko"],
+    "nahrady": {
+        "lepek": "Listové těsto lze zakoupit v bezlepkové variantě a hladkou mouku v krému nahradit kukuřičným škrobem.",
+        "laktoza": "Mléko lze nahradit plnotučným ovesným nebo kokosovým mlékem pro zachování krémové konzistence."
+    }
+},
+{
+    "id": "makronky",
+    "nazev": "Makronky",
+    "popis": "Křehké skořápky, sametový krém a francouzská elegance v jednom soustu.",
+    "ingredience": [
+        "Těsto:",
+        "125 g mandlové mouky",
+        "210 g moučkového cukru",
+        "3 bílky",
+        "30 g krupicového cukru",
+        "2x potravinářské barvivo (gelové)",
+        "Malinová náplň:",
+        "150 g bílé čokolády ",
+        "75 ml smetany ke šlehání",
+        "2 hrsti malin",
+        "Pistáciová náplň:",
+        "120g mletý cukr",
+        "100 g pistácie",
+        "80 g másla"
+    ],
+    "alergeny": ["skořápkové plody", "vejce", "mléko"],
+    "nahrady": {
+        "orechy": "Mandlovou mouku lze nahradit jemně mletými dýňovými semínky nebo slunečnicí, ale změní se barva a chuť.",
+        "laktoza": "Do náplně použijte bez laktózovou variantu.",
+        "vejce": "Bílky nejdou nahradit."
+    }
+},
+{
+    "id": "apple-pie",
+    "nazev": "Apple Pie",
+    "popis": "Klasický anglický koláč z křehkého těsta, plný jablek a jemného koření.",
+    "ingredience": [
+        "350 g hladké mouky",
+        "225 g studeného másla (nakrájeného na kostky)",
+        "50 g cukru krupice (do těsta)",
+        "2 vejce",
+        "1 kg jablek (oloupaných a nakrájených na plátky)",
+        "120 g cukru krupice (do náplně)",
+        "20 g vanilkový cukr",
+        "1 lžíce mleté skořice",
+        "šťáva z 1 citronu",
+        "3 lžíce hl. mouky"
+    ],
+    "alergeny": ["lepek", "laktóza", "vejce"],
+    "nahrady": {
+        "lepek": "V těstu pšeničnou mouku lze nahradit bezlepkovou směsí ,ve směsi lze vynechat.",
+        "laktoza": "Místo másla lze použít vychlazený rostlinný tuk (např. Alsan) pro přípravu křehkého těsta.",
+        "vejce": "Pro potření koláče lze místo vejce použít trochu mléka nebo rostlinného sirupu smíchaného s vodou.V těstu nelze vynechat."
+    }
+}
+
 ]
