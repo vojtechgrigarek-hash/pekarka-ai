@@ -50,7 +50,7 @@ app.post('/chat', (req, res) => {
         
         // POŽADAVEK: Název + Popis + Výzva k akci
         return res.json({ 
-            odpoved: `🥖 **${aktualniRecept.nazev}**\n\n${aktualniRecept.popis || "Tento recept nemá krátký popis."}\n\nCo konkrétně tě zajímá? (ingredience / alergeny / náhrady)` 
+            odpoved: ` ${aktualniRecept.nazev}\n\n${aktualniRecept.popis || "Tento recept nemá krátký popis."}\n\nCo konkrétně tě zajímá? (ingredience / alergeny / náhrady)` 
         });
     }
 
@@ -69,7 +69,7 @@ app.post('/chat', (req, res) => {
             }
 
             return res.json({ 
-                odpoved: `🛒 **Ingredience pro ${aktualniRecept.nazev}:**\n${seznamIngredienci}\n\nMůžu ti vypsat také **alergeny** nebo **náhrady**.` 
+                odpoved: ` Ingredience pro ${aktualniRecept.nazev}:\n${seznamIngredienci}\n\nMůžu ti vypsat také alergeny nebo náhrady.` 
             });
         }
 
@@ -80,7 +80,7 @@ app.post('/chat', (req, res) => {
                 : aktualniRecept.alergeny;
 
             return res.json({ 
-                odpoved: `⚠️ **Alergeny:**\n${alergenyText}\n\nZajímají tě i **náhrady**?` 
+                odpoved: `⚠️ Alergeny:\n${alergenyText}\n\nZajímají tě i náhrady?` 
             });
         }
 
@@ -102,7 +102,7 @@ function formatujNahrady(recept) {
     }
 
     const nahrady = recept.nahrady;
-    let vypis = `🔄 **Náhrady pro ${recept.nazev}:**\n`;
+    let vypis = `🔄 Náhrady pro ${recept.nazev}:\n`;
     
     // Zformátujeme náhrady pod sebe
     const polozky = Object.entries(nahrady).map(([co, cim]) => `- **${co}**: ${cim}`);
