@@ -1,71 +1,109 @@
+// --- 1. IMPORTY KNIHOVEN ---
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// Načtení receptů
-let recepty = [];
-try {
-    const data = fs.readFileSync('recepty.json', 'utf8');
-    recepty = JSON.parse(data);
-} catch (err) {
-    console.error("Chyba při načítání JSON:", err);
-}
+// --- 2. NAČTENÍ DAT ---
+const recepty = JSON.parse(fs.readFileSync('recepty.json', 'utf8'));
 
-// Proměnná pro "paměť" bota - uložíme si, o jakém receptu se právě bavíme
+// --- 3. PAMĚŤ SERVERU ---
 let aktualniRecept = null;
 
+// --- 4. HLAVNÍ KOMUNIKAČNÍ BOD (ENDPOINT) ---
 app.post('/chat', (req, res) => {
-    const dotaz = req.body.dotaz || "";
+    
+    // Z příchozí zprávy vytáhneme text
+    const { dotaz } = req.body;
+
+    // Pojistka proti prázdné zprávě
+    if (!dotaz) {
+        return res.json({ odpoved: "Zatím jsi nic nenapsal." });
+    }
+
+    // Převedeme vše na malá písmena (sjednotíme proměnnou na 'text')
     const text = dotaz.toLowerCase();
 
-    // 1. ŽÁDOST O ALERGENY (U rozpracovaného receptu)
-    if (text.includes("alergen") && aktualniRecept) {
-        const al = aktualniRecept.alergeny.length > 0 ? aktualniRecept.alergeny.join(", ") : "Žádné významné alergeny.";
+    // --- KROK 1: GLOBÁLNÍ PŘÍKAZY (VÝPIS VŠECH) ---
+    // Toto kontrolujeme jako první. Pokud chce uživatel seznam, nehledáme konkrétní recept.
+    // --- KROK 1: GLOBÁLNÍ PŘÍKAZY (VÝPIS VŠECH) ---
+    if (text === "recepty" || text.includes("jaké jsou recepty") || text.includes("seznam receptů")) {
+        aktualniRecept = null; 
+        
+        // ZMĚNA: Místo čárky použijeme "\n- " (nový řádek a pomlčka)
+        // .map() projde recepty a .join() je spojí tímto oddělovačem
+        const seznamNazvu = recepty.map(r => r.nazev).join("\n- ");
+        
         return res.json({ 
-            odpoved: `Alergeny pro ${aktualniRecept.nazev} jsou: ${al}.\n\nChceš vědět i možné náhrady?` 
+            // Přidal jsem \n i před první recept, aby to začalo na novém řádku
+            odpoved: `Mám v databázi tyto recepty:\n- ${seznamNazvu}\n\nO kterém se chceš dozvědět víc?` 
         });
     }
 
-    // 2. ŽÁDOST O NÁHRADY (U rozpracovaného receptu)
-    if (text.includes("nahrad") && aktualniRecept) {
-        // Tady procházíme objekt "nahrady" a skládáme text
-        let nahradyText = Object.entries(aktualniRecept.nahrady)
-            .map(([klic, hodnota]) => `• **${klic}**: ${hodnota}`)
-            .join("\n");
+    // --- KROK 2: LOGIKA HLEDÁNÍ KONKRÉTNÍHO RECEPTU ---
+    const nalezenyRecept = recepty.find(r => 
+        text.includes(r.id) || text.includes(r.nazev.toLowerCase())
+    );
+
+    // --- SCÉNÁŘ A: Uživatel napsal název receptu (např. "Máš loupáčky?") ---
+    if (nalezenyRecept) {
+        aktualniRecept = nalezenyRecept; // ULOŽÍME DO PAMĚTI
         
-        return res.json({ 
-            odpoved: `Tady jsou možnosti náhrad pro ${aktualniRecept.nazev}:\n${nahradyText || "Žádné náhrady nejsou uvedeny."}` 
-        });
+        // Rychlá kontrola: "alergeny loupáčky"
+        if (text.includes("alerg")) {
+            return res.json({ odpoved: `V receptu na ${aktualniRecept.nazev} jsou tyto alergeny: ${aktualniRecept.alergeny.join(", ")}.` });
+        }
+        
+        // Rychlá kontrola: "náhrady loupáčky"
+        if (text.includes("náhrad") || text.includes("alternativ")) {
+            return res.json({ odpoved: formatujNahrady(aktualniRecept) });
+        }
+
+        // Pokud napsal jen název
+        return res.json({ odpoved: `Jasně, dívám se na ${nalezenyRecept.nazev}. Co konkrétně tě zajímá? (ingredience / alergeny / náhrady)` });
     }
 
-    // 3. SEZNAM RECEPTŮ
-    if (text === "recepty" || text.includes("seznam") || text.includes("co umíš")) {
-        aktualniRecept = null; // Vymažeme paměť
-        const seznam = recepty.map(r => r.nazev).join("\n- ");
-        return res.json({ odpoved: `Mám v databázi tyto recepty:\n- ${seznam}\n\nO kterém se chceš dozvědět víc?` });
+    // --- SCÉNÁŘ B: Uživatel nenapsal název, ale server má něco v paměti ---
+    if (aktualniRecept) {
+        
+        if (text.includes("alerg")) {
+            return res.json({ odpoved: `Alergeny pro ${aktualniRecept.nazev} jsou: ${aktualniRecept.alergeny.join(", ")}.` });
+        } 
+        
+        if (text.includes("náhrad") || text.includes("alternativ")) {
+            return res.json({ odpoved: formatujNahrady(aktualniRecept) });
+        }
+
+        if (text.includes("ingredience") || text.includes("co potřebuju") || text.includes("složení")) {
+            return res.json({ odpoved: `Na ${aktualniRecept.nazev} budeš potřebovat: ${aktualniRecept.ingredience.join(", ")}.` });
+        }
     }
 
-    // 4. HLEDÁNÍ KONKRÉTNÍHO RECEPTU (První krok interakce)
-    const nalezeny = recepty.find(r => text.includes(r.nazev.toLowerCase()));
-    
-    if (nalezeny) {
-        aktualniRecept = nalezeny; // Bot si "zapamatuje", že mluvíme o Apple Pie
-        
-        // Jelikož jsou ingredience v poli, musíme je spojit do řádků
-        const ingredienceList = nalezeny.ingredience.map(i => `- ${i}`).join("\n");
-        
-        return res.json({ 
-            odpoved: `Jasně! Tady jsou ingredience na **${nalezeny.nazev}**:\n${ingredienceList}\n\nChceš vědět, jaké má tento recept **alergeny** nebo jaké jsou **náhrady**?` 
-        });
-    }
-
-    // 5. KDYŽ BOT NEROZUMÍ
-    res.json({ odpoved: "Zkus napsat název receptu nebo 'seznam'. Pokud se ptáš na alergeny/náhrady, musíme nejdřív vybrat recept." });
+    // --- SCÉNÁŘ C: Server neví, o čem je řeč ---
+    res.json({ odpoved: "Zatím nevím, o jakém receptu se bavíme. Zkus napsat 'recepty' pro seznam, nebo konkrétní název." });
 });
 
+
+// --- 5. POMOCNÁ FUNKCE ---
+function formatujNahrady(recept) {
+    // Pokud recept nemá náhrady, nebo je objekt prázdný, vrátíme info
+    if (!recept.nahrady || Object.keys(recept.nahrady).length === 0) {
+        return `Pro recept ${recept.nazev} nemám žádné specifické náhrady.`;
+    }
+
+    const nahrady = recept.nahrady;
+    let vypis = `Náhrady pro ${recept.nazev}: `;
+    const polozky = Object.entries(nahrady).map(([co, cim]) => `${co} -> ${cim}`);
+    return vypis + polozky.join("; "); // Použil jsem středník pro lepší čitelnost
+}
+
+
+// --- 6. SPUŠTĚNÍ SERVERU ---
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server běží na portu ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server běží na portu ${PORT}`);
+});
