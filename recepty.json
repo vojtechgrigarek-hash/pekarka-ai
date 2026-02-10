@@ -25,7 +25,8 @@
       "vejce": "Vejce jsou klíčová pro strukturu, lze je nahradit jen obtížně (např. aquafabou s výraznou změnou výsledku).",
       "laktóza": "Máslo lze nahradit bezlaktózovým nebo rostlinným tukem, použijte hořkou čokoládu bez mléka.",
       "alkohol": "Rum lze vynechat, slouží pouze k dochucení."
-    }
+    },
+    "vlastnosti": ["lepek","vejce", "laktoza", "bez-ořechů", "bez-siřičitany"]
     },
   
   {
@@ -56,7 +57,8 @@
       "lepek": "Pšeničnou mouku lze nahradit bezlepkovou směsí, těsto bude křehčí.",
       "laktóza": "Použijte bezlaktózové mléko a rostlinný tuk místo másla.",
       "skořápkové_plody": "Mandle lze vynechat nebo nahradit drcenými slunečnicovými semínky."
-    }
+    },
+    "vlastnosti": ["lepek", "laktóza", "vejce", "ořechy", "siřičitany"]
   },
   {
       "id": "churros",
@@ -79,7 +81,8 @@
     "nahrady": {
       "lepek": "Použijte bezlepkovou mouku a přidejte trochu xanthanové gumy.",
       "laktóza": "Máslo lze nahradit kokosovým olejem nebo rostlinným margarínem."
-    }
+    },
+    "vlastnosti": ["lepek", "vejce", "laktóza", "bez-ořechů","bez-siřičitany"]
   },
   {
     
@@ -95,13 +98,14 @@
         "cukrářské piškoty 45 ks",
         "kakaový prášek 2 lžíce"
     ],
-    "alergeny": ["vejce", "mléko", "lepek"],
+    "alergeny": ["vejce", "laktóza", "lepek"],
     "nahrady": {
         "lepek": "Místo klasických cukrářských piškotů lze použít jejich bezlepkovou variantu.",
         "laktóza": "Jde využít bezlaktózovou variantu. Nebo u mascarpone jde využít bílý jogurt",
         "vejce": "Žloutky nejdou pro jejich chuť nahradit",
         "cukr": "Pro zdravější varientu jde nahradit."
-    }
+    },
+    "vlastnosti": ["lepek", "vejce", "laktóza", "bez-ořechů", "bez-siřičitany"]
   },
   {
     "id": "pastel-de-nata",
@@ -121,8 +125,10 @@
     "alergeny": ["lepek", "vejce", "laktóza"],
     "nahrady": {
       "lepek": "Použijte bezlepkové listové těsto.",
-      "laktóza": "Smetanu lze nahradit bezlaktózovou nebo rostlinnou smetanou na vaření."
-    }
+      "laktóza": "Smetanu lze nahradit bezlaktózovou nebo rostlinnou smetanou na vaření.",
+      "vejce": "Žloutky jsou zásadní část chutě."
+    },
+    "vlastnosti": ["lepek", "vejce", "laktóza", "bez-ořechů", "bez-siřičitany"]
 },
 {
     "id": "makronky",
@@ -149,7 +155,8 @@
         "orechy": "Mandlovou mouku lze nahradit jemně mletými dýňovými semínky nebo slunečnicí, ale změní se barva a chuť.",
         "laktoza": "Do náplně použijte bez laktózovou variantu. Nebo lze vynechat malinová náplň.",
         "vejce": "Bílky nejdou nahradit."
-    }
+    },
+    "vlastnosti": ["skořápkové plody", "vejce", "bez-lepku", "bez-siřičitany"]
 },
 {
      "id": "apple-pie",
@@ -170,7 +177,8 @@
     "nahrady": {
       "lepek": "Použijte bezlepkovou moučnou směs vhodnou na křehké těsto.",
       "laktóza": "Máslo lze nahradit vychlazeným rostlinným tukem."
-    }
+    },
+    "vlastnosti": ["lepek", "laktóza", "bez-ořechů", "bez-vajec", "bez-siřičitany"]
 }
 
 ]
