@@ -105,7 +105,7 @@ function formatujNahrady(recept) {
     let vypis = `🔄 Náhrady pro ${recept.nazev}:\n`;
     
     // Zformátujeme náhrady pod sebe
-    const polozky = Object.entries(nahrady).map(([co, cim]) => `- **${co}**: ${cim}`);
+    const polozky = Object.entries(nahrady).map(([co, cim]) => `- ${co}: ${cim}`);
     
     return vypis + polozky.join("\n");
 }
