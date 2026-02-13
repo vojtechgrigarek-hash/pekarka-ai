@@ -37,7 +37,43 @@ app.post('/chat', (req, res) => {
             odpoved: `Mám v databázi tyto recepty:\n- ${seznamNazvu}\n\nO kterém se chceš dozvědět víc?` 
         });
     }
+// 1.5 FILTROVÁNÍ PODLE VLASTNOSTÍ
+    // Filtr: BEZ LEPKU
+    if (text.includes("bez lepku") || text.includes("bezlepkov")) {
+        // Hledáme recepty, které mají v poli 'vlastnosti' napsáno "bez-lepku"
+        const vyfiltrovane = recepty.filter(r => r.vlastnosti && r.vlastnosti.includes("bez-lepku"));
+        
+        if (vyfiltrovane.length > 0) {
+            const seznam = vyfiltrovane.map(r => r.nazev).join("\n- ");
+            return res.json({ odpoved: `Mám tu tyto **bezlepkové** recepty:\n- ${seznam}\n\nKterý si vybereš?` });
+        } else {
+            return res.json({ odpoved: "Bohužel, žádné bezlepkové recepty jsem zatím nenašel." });
+        }
+    }
 
+    // Filtr: BEZ LAKTÓZY
+    if (text.includes("bez laktoz") || text.includes("bez mléka")) {
+        const vyfiltrovane = recepty.filter(r => r.vlastnosti && r.vlastnosti.includes("bez-laktozy"));
+        
+        if (vyfiltrovane.length > 0) {
+            const seznam = vyfiltrovane.map(r => r.nazev).join("\n- ");
+            return res.json({ odpoved: `Recepty **bez laktózy**:\n- ${seznam}\n\nKterý tě zaujal?` });
+        } else {
+            return res.json({ odpoved: "Zatím nemám žádné recepty čistě bez laktózy, ale zkus se zeptat na náhrady u konkrétních receptů!" });
+        }
+    }
+
+    // Filtr: BEZ VAJEC
+    if (text.includes("bez vajec") || text.includes("bez vejce")) {
+        const vyfiltrovane = recepty.filter(r => r.vlastnosti && r.vlastnosti.includes("bez-vajec"));
+        
+        if (vyfiltrovane.length > 0) {
+            const seznam = vyfiltrovane.map(r => r.nazev).join("\n- ");
+            return res.json({ odpoved: `Recepty **bez vajec**:\n- ${seznam}` });
+        } else {
+            return res.json({ odpoved: "Recepty bez vajec zatím v databázi chybí." });
+        }
+    }
     // --- KROK 2: HLEDÁNÍ NOVÉHO RECEPTU ---
     // Zkusíme najít, jestli uživatel napsal název nějakého receptu
     const nalezenyRecept = recepty.find(r => 
